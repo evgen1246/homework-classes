@@ -32,6 +32,6 @@ def empty_category():
 @pytest.fixture
 def reset_counters():
     """Фикстура: сбрасывает счётчики категорий перед каждым тестом."""
-    Category.total_categories = 0
-    Category.total_products = 0
+    Category.category_count = 0
+    Category.product_count = 0
     yield
