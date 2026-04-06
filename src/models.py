@@ -34,6 +34,6 @@ class Category:
         Category.category_count += 1
 
         # Увеличиваем счётчик продуктов при создании нового объекта
-        Category.total_products = len(self.products)
+        Category.product_count += len(self.products)
 
 
