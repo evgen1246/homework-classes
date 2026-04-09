@@ -65,7 +65,8 @@ class Category:
             return "В категории нет товаров"
         result = []
         for product in self.__products:
-            result.append(f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.")
+            price_int = int(product.price) if product.price.is_integer() else product.price
+            result.append(f"{product.name}, {price_int} руб. Остаток: {product.quantity} шт.")
         return "\n".join(result)
 
     @property
