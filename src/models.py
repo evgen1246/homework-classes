@@ -14,6 +14,11 @@ class Product:
         self.__price = price
         self.quantity = quantity
 
+
+    def __str__(self):
+        """Строковое представление товара."""
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
     @property
     def price(self) -> float:
         return self.__price
@@ -63,11 +68,7 @@ class Category:
         """Геттер для получения списка товаров в виде строки."""
         if not self.__products:
             return "В категории нет товаров"
-        result = []
-        for product in self.__products:
-            price_int = int(product.price) if product.price.is_integer() else product.price
-            result.append(f"{product.name}, {price_int} руб. Остаток: {product.quantity} шт.")
-        return "\n".join(result)
+        return "\n".join(str(product) for product in self.__products)
 
     @property
     def products_list(self) -> List[Product]:
