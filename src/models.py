@@ -19,6 +19,11 @@ class Product:
         """Строковое представление товара."""
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
+    def __add__(self, other):
+        """Возвращает общую стоимость: цена_1 * количество_1 + цена_2 * количество_2"""
+        total_cost = (self.price * self.quantity) + (other.price * other.quantity)
+        return total_cost
+
     @property
     def price(self) -> float:
         return self.__price
