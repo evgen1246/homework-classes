@@ -80,9 +80,10 @@ def test_empty_category_creation(empty_category):
     assert empty_category.description == "Категория без товаров"
     assert len(empty_category.products_list) == 0
 
+
 def test_product_str(sample_product):
     """Тест строкового представления товара."""
-    expected = "Овощи, 100.0 руб. Остаток: 20 шт."
+    expected = "Овощи, 100 руб. Остаток: 20 шт."
     assert str(sample_product) == expected
 
 

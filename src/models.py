@@ -14,12 +14,11 @@ class Product:
         self.__price = price
         self.quantity = quantity
 
-
-    def __str__(self):
+    def __str__(self) -> str:
         """Строковое представление товара."""
-        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+        return f"{self.name}, {int(self.price)} руб. Остаток: {self.quantity} шт."
 
-    def __add__(self, other):
+    def __add__(self, other: "Product") -> float:
         """Возвращает общую стоимость: цена_1 * количество_1 + цена_2 * количество_2"""
         total_cost = (self.price * self.quantity) + (other.price * other.quantity)
         return total_cost
@@ -63,6 +62,11 @@ class Category:
 
         # Увеличиваем счётчик продуктов при создании нового объекта
         Category.product_count += len(self.__products)
+
+    def __str__(self) -> str:
+        """ ""Строковое представление категории."""
+        total_quantity = sum(product.quantity for product in self.__products)
+        return f"{self.name}, количество продуктов: {total_quantity} шт."
 
     def add_product(self, product: Product) -> None:
         self.__products.append(product)
