@@ -79,3 +79,20 @@ def test_empty_category_creation(empty_category):
     assert empty_category.name == "Пустая категория"
     assert empty_category.description == "Категория без товаров"
     assert len(empty_category.products_list) == 0
+
+def test_product_str(sample_product):
+    """Тест строкового представления товара."""
+    expected = "Овощи, 100.0 руб. Остаток: 20 шт."
+    assert str(sample_product) == expected
+
+
+def test_product_add(sample_product, another_product):
+    """Тест сложения двух товаров."""
+    # a = Product("Товар A", "Описание A", 100, 10)
+    # b = Product("Товар B", "Описание B", 200, 2)
+
+    result = sample_product + another_product
+    expected = 100 * 20 + 80 * 30  # 2000 + 2400 = 4400
+
+    assert result == expected
+    assert isinstance(result, float)
