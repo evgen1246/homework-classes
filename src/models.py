@@ -20,8 +20,11 @@ class Product:
 
     def __add__(self, other: "Product") -> float:
         """Возвращает общую стоимость: цена_1 * количество_1 + цена_2 * количество_2"""
-        total_cost = (self.price * self.quantity) + (other.price * other.quantity)
-        return total_cost
+        if type(self) is type(other):
+            total_cost = (self.price * self.quantity) + (other.price * other.quantity)
+            return total_cost
+        else:
+            raise TypeError
 
     @property
     def price(self) -> float:
@@ -69,8 +72,12 @@ class Category:
         return f"{self.name}, количество продуктов: {total_quantity} шт."
 
     def add_product(self, product: Product) -> None:
-        self.__products.append(product)
-        Category.product_count += 1
+        """Добавить товар в категорию."""
+        if isinstance(product, Product):
+            self.__products.append(product)
+            Category.product_count += 1
+        else:
+            raise TypeError
 
     @property
     def products(self) -> str:
@@ -88,7 +95,7 @@ class Category:
 class Smartphone(Product):
     """Класс для представления смартфона (наследник Product)."""
 
-    def __init__(self, name: str, description: str, efficiency: str, model: str, memory:int, color:str, price: float, quantity: int) -> None:
+    def __init__(self, name: str, description: str, price: float, quantity: int, efficiency: str, model: str, memory: int, color: str) -> None:
         super().__init__(name, description, price, quantity)
         self.efficiency = efficiency
         self.model = model
@@ -100,8 +107,9 @@ class Smartphone(Product):
 class LawnGrass(Product):
     """Класс для представления газонной травы(наследник Product)."""
 
-    def __init__(self, name: str, description: str, country: str, germination_period: int, color: str, price: float, quantity: int) -> None:
+    def __init__(self, name: str, description: str, price: float, quantity: int, country: str, germination_period: str, color: str) -> None:
         super().__init__(name, description, price,quantity)
         self.country = country
         self.germination_period= germination_period
         self.color = color
+
