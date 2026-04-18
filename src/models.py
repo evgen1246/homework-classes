@@ -14,6 +14,15 @@ class Product:
         self.__price = price
         self.quantity = quantity
 
+    def __str__(self) -> str:
+        """Строковое представление товара."""
+        return f"{self.name}, {int(self.price)} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other: "Product") -> float:
+        """Возвращает общую стоимость: цена_1 * количество_1 + цена_2 * количество_2"""
+        total_cost = (self.price * self.quantity) + (other.price * other.quantity)
+        return total_cost
+
     @property
     def price(self) -> float:
         return self.__price
@@ -54,6 +63,11 @@ class Category:
         # Увеличиваем счётчик продуктов при создании нового объекта
         Category.product_count += len(self.__products)
 
+    def __str__(self) -> str:
+        """ ""Строковое представление категории."""
+        total_quantity = sum(product.quantity for product in self.__products)
+        return f"{self.name}, количество продуктов: {total_quantity} шт."
+
     def add_product(self, product: Product) -> None:
         self.__products.append(product)
         Category.product_count += 1
@@ -63,11 +77,7 @@ class Category:
         """Геттер для получения списка товаров в виде строки."""
         if not self.__products:
             return "В категории нет товаров"
-        result = []
-        for product in self.__products:
-            price_int = int(product.price) if product.price.is_integer() else product.price
-            result.append(f"{product.name}, {price_int} руб. Остаток: {product.quantity} шт.")
-        return "\n".join(result)
+        return "\n".join(str(product) for product in self.__products)
 
     @property
     def products_list(self) -> List[Product]:
