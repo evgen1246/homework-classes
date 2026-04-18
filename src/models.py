@@ -83,3 +83,25 @@ class Category:
     def products_list(self) -> List[Product]:
         """Свойство для получения списка товаров (только для чтения)."""
         return self.__products.copy()
+
+
+class Smartphone(Product):
+    """Класс для представления смартфона (наследник Product)."""
+
+    def __init__(self, name: str, description: str, efficiency: str, model: str, memory:int, color:str, price: float, quantity: int) -> None:
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+
+
+class LawnGrass(Product):
+    """Класс для представления газонной травы(наследник Product)."""
+
+    def __init__(self, name: str, description: str, country: str, germination_period: int, color: str, price: float, quantity: int) -> None:
+        super().__init__(name, description, price,quantity)
+        self.country = country
+        self.germination_period= germination_period
+        self.color = color
