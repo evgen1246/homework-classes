@@ -95,7 +95,17 @@ class Category:
 class Smartphone(Product):
     """Класс для представления смартфона (наследник Product)."""
 
-    def __init__(self, name: str, description: str, price: float, quantity: int, efficiency: str, model: str, memory: int, color: str) -> None:
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        efficiency: str,
+        model: str,
+        memory: int,
+        color: str,
+    ) -> None:
         super().__init__(name, description, price, quantity)
         self.efficiency = efficiency
         self.model = model
@@ -103,13 +113,20 @@ class Smartphone(Product):
         self.color = color
 
 
-
 class LawnGrass(Product):
     """Класс для представления газонной травы(наследник Product)."""
 
-    def __init__(self, name: str, description: str, price: float, quantity: int, country: str, germination_period: str, color: str) -> None:
-        super().__init__(name, description, price,quantity)
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        country: str,
+        germination_period: str,
+        color: str,
+    ) -> None:
+        super().__init__(name, description, price, quantity)
         self.country = country
-        self.germination_period= germination_period
+        self.germination_period = germination_period
         self.color = color
-

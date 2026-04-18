@@ -1,4 +1,4 @@
-from src.models import Product, LawnGrass
+from src.models import Product
 
 
 def test_product(sample_product):
@@ -113,13 +113,15 @@ def test_smartphone_init(sample_smartphone):
 def test_smartphone_inheritance(sample_smartphone):
     """Тест наследования от Product."""
     assert isinstance(sample_smartphone, Product)
-    assert hasattr(sample_smartphone, 'price')
-    assert hasattr(sample_smartphone, 'quantity')
+    assert hasattr(sample_smartphone, "price")
+    assert hasattr(sample_smartphone, "quantity")
+
 
 def test_smartphone_price_setter(sample_smartphone):
     """Тест установки цены смартфона."""
     sample_smartphone.price = 171000.0
     assert sample_smartphone.price == 171000.0
+
 
 def test_smartphone_add_same_class(sample_smartphone, another_smartphone):
     """Тест сложения двух смартфонов."""
@@ -137,11 +139,13 @@ def test_lawn_grass_init(sample_lawn_grass):
     assert sample_lawn_grass.germination_period == "7 дней"
     assert sample_lawn_grass.color == "Зеленый"
 
+
 def test_lawn_grass_inheritance(sample_lawn_grass):
     """Тест наследования от Product."""
     assert isinstance(sample_lawn_grass, Product)
-    assert hasattr(sample_lawn_grass, 'price')
-    assert hasattr(sample_lawn_grass, 'quantity')
+    assert hasattr(sample_lawn_grass, "price")
+    assert hasattr(sample_lawn_grass, "quantity")
+
 
 def test_lawn_grass_price_setter(sample_lawn_grass):
     """Тест установки цены."""
@@ -154,4 +158,3 @@ def test_lawn_grass_add(sample_lawn_grass, another_grass):
     result = sample_lawn_grass + another_grass
     expected = (500 * 20) + (450 * 15)
     assert result == expected
-
