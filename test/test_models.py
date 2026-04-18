@@ -1,4 +1,4 @@
-from src.models import Product
+from src.models import Product, LawnGrass
 
 
 def test_product(sample_product):
@@ -97,3 +97,61 @@ def test_product_add(sample_product, another_product):
 
     assert result == expected
     assert isinstance(result, float)
+
+
+def test_smartphone_init(sample_smartphone):
+    assert sample_smartphone.name == "Samsung Galaxy S23 Ultra"
+    assert sample_smartphone.description == "256GB, Серый цвет, 200MP камера"
+    assert sample_smartphone.price == 180000.0
+    assert sample_smartphone.quantity == 5
+    assert sample_smartphone.efficiency == 95.5
+    assert sample_smartphone.model == "S23 Ultra"
+    assert sample_smartphone.memory == 256
+    assert sample_smartphone.color == "Серый"
+
+
+def test_smartphone_inheritance(sample_smartphone):
+    """Тест наследования от Product."""
+    assert isinstance(sample_smartphone, Product)
+    assert hasattr(sample_smartphone, 'price')
+    assert hasattr(sample_smartphone, 'quantity')
+
+def test_smartphone_price_setter(sample_smartphone):
+    """Тест установки цены смартфона."""
+    sample_smartphone.price = 171000.0
+    assert sample_smartphone.price == 171000.0
+
+def test_smartphone_add_same_class(sample_smartphone, another_smartphone):
+    """Тест сложения двух смартфонов."""
+    result = sample_smartphone + another_smartphone
+    expected = (180000 * 5) + (100000 * 15)
+    assert result == expected
+
+
+def test_lawn_grass_init(sample_lawn_grass):
+    assert sample_lawn_grass.name == "Газонная трава"
+    assert sample_lawn_grass.description == "Элитная трава для газона"
+    assert sample_lawn_grass.price == 500.0
+    assert sample_lawn_grass.quantity == 20
+    assert sample_lawn_grass.country == "Россия"
+    assert sample_lawn_grass.germination_period == "7 дней"
+    assert sample_lawn_grass.color == "Зеленый"
+
+def test_lawn_grass_inheritance(sample_lawn_grass):
+    """Тест наследования от Product."""
+    assert isinstance(sample_lawn_grass, Product)
+    assert hasattr(sample_lawn_grass, 'price')
+    assert hasattr(sample_lawn_grass, 'quantity')
+
+def test_lawn_grass_price_setter(sample_lawn_grass):
+    """Тест установки цены."""
+    sample_lawn_grass.price = 600.0
+    assert sample_lawn_grass.price == 600.0
+
+
+def test_lawn_grass_add(sample_lawn_grass, another_grass):
+    """Тест сложения."""
+    result = sample_lawn_grass + another_grass
+    expected = (500 * 20) + (450 * 15)
+    assert result == expected
+
