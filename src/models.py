@@ -1,30 +1,90 @@
+from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional
 
 
-class Product:
-    """Класс для представления товара."""
+class PrintMixin:
+    """Миксин для автоматического логирования создания объектов."""
 
     name: str
     description: str
+    price: float
     quantity: int
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        print(repr(self))
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}({self.name}, {self.description}, {self.price}, {self.quantity})"
+
+
+class BaseProduct(ABC):
+    """Абстрактный базовый класс для всех продуктов."""
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        """Базовый __init__, который ничего не делает, но принимает аргументы."""
+        super().__init__()
+
+    @abstractmethod
+    def __str__(self) -> str:
+        """Строковое представление продукта."""
+        pass
+
+    @property
+    @abstractmethod
+    def price(self) -> float:
+        """Геттер для получения цены."""
+        pass
+
+    @price.setter
+    @abstractmethod
+    def price(self, new_price: float) -> None:
+        """Сеттер для установки цены."""
+        pass
+
+    @abstractmethod
+    def __add__(self, other: "BaseProduct") -> float:
+        """Сложение продуктов (общая стоимость)."""
+        pass
+
+    @property
+    @abstractmethod
+    def quantity(self) -> int:
+        """Геттер для получения количества."""
+        pass
+
+    @quantity.setter
+    @abstractmethod
+    def quantity(self, new_quantity: int) -> None:
+        """Сеттер для установки количества."""
+        pass
+
+
+class Product(PrintMixin, BaseProduct):
+    """Класс для представления товара."""
 
     def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
         self.name = name
         self.description = description
         self.__price = price
-        self.quantity = quantity
+        self.__quantity = quantity
+        super().__init__(name, description, price, quantity)
 
     def __str__(self) -> str:
         """Строковое представление товара."""
         return f"{self.name}, {int(self.price)} руб. Остаток: {self.quantity} шт."
 
-    def __add__(self, other: "Product") -> float:
+    def __add__(self, other: "BaseProduct") -> float:
         """Возвращает общую стоимость: цена_1 * количество_1 + цена_2 * количество_2"""
-        if type(self) is type(other):
-            total_cost = (self.price * self.quantity) + (other.price * other.quantity)
-            return total_cost
-        else:
-            raise TypeError
+        if not isinstance(other, BaseProduct):
+            raise TypeError(f"Нельзя сложить Product и {type(other).__name__}")
+
+        if type(self) is not type(other):
+            raise TypeError(
+                f"Нельзя складывать товары разных классов: " f"{type(self).__name__} и {type(other).__name__}"
+            )
+
+        return (self.price * self.quantity) + (other.price * other.quantity)
 
     @property
     def price(self) -> float:
@@ -45,6 +105,19 @@ class Product:
             price=product_data["price"],
             quantity=product_data["quantity"],
         )
+
+    @property
+    def quantity(self) -> int:
+        """Геттер для получения количества."""
+        return self.__quantity
+
+    @quantity.setter
+    def quantity(self, new_quantity: int) -> None:
+        """Сеттер для установки количества с проверкой."""
+        if new_quantity < 0:
+            print("Количество не может быть отрицательным")
+        else:
+            self.__quantity = new_quantity
 
 
 class Category:
@@ -73,7 +146,7 @@ class Category:
 
     def add_product(self, product: Product) -> None:
         """Добавить товар в категорию."""
-        if isinstance(product, Product):
+        if isinstance(product, BaseProduct):
             self.__products.append(product)
             Category.product_count += 1
         else:

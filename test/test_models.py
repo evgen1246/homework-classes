@@ -31,18 +31,21 @@ def test_product_price_setter_valid():
 def test_product_price_setter_zero(capsys):
     """Тест установки нулевой цены."""
     prod = Product("Продукт", "Описание", 500.0, 10)
+    capsys.readouterr()
     prod.price = 0
     captured = capsys.readouterr()
-    assert captured.out == "Цена не должна быть нулевая или отрицательная\n"
+    assert "Цена не должна быть нулевая или отрицательная" in captured.out
+    assert prod.price == 500.0
 
 
 def test_product_price_setter_negative(capsys):
     """Тест установки отрицательной цены."""
     prod = Product("Продукт", "Описание", 500.0, 10)
+    capsys.readouterr()
     prod.price = -100
     assert prod.price == 500.0
     captured = capsys.readouterr()
-    assert captured.out == "Цена не должна быть нулевая или отрицательная\n"
+    assert "Цена не должна быть нулевая или отрицательная" in captured.out
 
 
 def test_product_new_product_class_method():
@@ -158,3 +161,16 @@ def test_lawn_grass_add(sample_lawn_grass, another_grass):
     result = sample_lawn_grass + another_grass
     expected = (500 * 20) + (450 * 15)
     assert result == expected
+
+
+def test_print_mixin_output(capsys):
+    """Тест: при создании продукта PrintMixin выводит repr в консоль."""
+    Product("Тест", "Описание", 100.0, 10)
+    captured = capsys.readouterr()
+    assert captured.out.strip() == "Product(Тест, Описание, 100.0, 10)"
+
+
+def test_print_mixin_repr_format(sample_product):
+    """Тест: формат __repr__ соответствует ожидаемому."""
+    expected = "Product(Овощи, Огурцы колючие, 100.0, 20)"
+    assert repr(sample_product) == expected
