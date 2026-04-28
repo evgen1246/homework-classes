@@ -1,4 +1,6 @@
-from src.models import Product
+import pytest
+
+from src.models import Category, LawnGrass, Product, Smartphone
 
 
 def test_product(sample_product):
@@ -107,7 +109,7 @@ def test_smartphone_init(sample_smartphone):
     assert sample_smartphone.description == "256GB, Серый цвет, 200MP камера"
     assert sample_smartphone.price == 180000.0
     assert sample_smartphone.quantity == 5
-    assert sample_smartphone.efficiency == 95.5
+    assert sample_smartphone.efficiency == "Высокая"
     assert sample_smartphone.model == "S23 Ultra"
     assert sample_smartphone.memory == 256
     assert sample_smartphone.color == "Серый"
@@ -129,7 +131,7 @@ def test_smartphone_price_setter(sample_smartphone):
 def test_smartphone_add_same_class(sample_smartphone, another_smartphone):
     """Тест сложения двух смартфонов."""
     result = sample_smartphone + another_smartphone
-    expected = (180000 * 5) + (100000 * 15)
+    expected = (180000 * 5) + (210000 * 15)
     assert result == expected
 
 
@@ -174,3 +176,48 @@ def test_print_mixin_repr_format(sample_product):
     """Тест: формат __repr__ соответствует ожидаемому."""
     expected = "Product(Овощи, Огурцы колючие, 100.0, 20)"
     assert repr(sample_product) == expected
+
+
+def test_product_creation_with_zero_quantity_raises_error():
+    """Тест: создание товара с нулевым количеством вызывает ValueError."""
+    with pytest.raises(ValueError) as e:
+        Product("Товар", "Описание", 100.0, 0)
+    assert "Товар с нулевым количеством не может быть добавлен" in str(e.value)
+
+
+def test_smartphone_creation_with_zero_quantity_raises_error():
+    """Тест: создание смартфона с нулевым количеством вызывает ValueError."""
+    with pytest.raises(ValueError) as e:
+        Smartphone("iPhone", "Флагман", 100000.0, 0, "Высокая", "15 Pro", 256, "Черный")
+    assert "Товар с нулевым количеством не может быть добавлен" in str(e.value)
+
+
+def test_lawn_grass_creation_with_zero_quantity_raises_error():
+    """Тест: создание газонной травы с нулевым количеством вызывает ValueError."""
+    with pytest.raises(ValueError) as e:
+        LawnGrass("Трава", "Описание", 500.0, 0, "Россия", "7 дней", "Зеленый")
+    assert "Товар с нулевым количеством не может быть добавлен" in str(e.value)
+
+
+def test_category_get_average_price_with_products(sample_category):
+    """Тест подсчёта средней цены в категории с товарами."""
+    expected_average = (100.0 + 80.0) / 2
+    assert sample_category.get_average_price() == expected_average
+
+
+def test_category_get_average_price_with_smartphones(sample_smartphone, another_smartphone):
+    """Тест подсчёта средней цены для категории со смартфонами."""
+    category = Category("Смартфоны", "Описание", [sample_smartphone, another_smartphone])
+    expected_average = (180000.0 + 210000.0) / 2
+    assert category.get_average_price() == expected_average
+
+
+def test_category_get_average_price_with_mixed_products():
+    """Тест подсчёта средней цены для категории со смешанными товарами."""
+    product = Product("Товар", "Описание", 100.0, 10)
+    smartphone = Smartphone("Смартфон", "Описание", 50000.0, 5, "High", "M1", 128, "Black")
+    grass = LawnGrass("Трава", "Описание", 1500.0, 100, "Россия", "7 дней", "Зеленый")
+
+    category = Category("Смешанная", "Разные товары", [product, smartphone, grass])
+    expected_average = (100.0 + 50000.0 + 1500.0) / 3
+    assert category.get_average_price() == expected_average
