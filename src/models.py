@@ -64,6 +64,9 @@ class Product(PrintMixin, BaseProduct):
     """Класс для представления товара."""
 
     def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
+        if quantity == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
+
         self.name = name
         self.description = description
         self.__price = price
@@ -138,6 +141,18 @@ class Category:
 
         # Увеличиваем счётчик продуктов при создании нового объекта
         Category.product_count += len(self.__products)
+
+    def get_average_price(self) -> float:
+        if not self.__products:
+            return 0
+
+        try:
+            total_price = sum(product.price for product in self.__products)
+            count = len(self.__products)
+            average_price = total_price / count
+            return average_price
+        except ZeroDivisionError:
+            return 0
 
     def __str__(self) -> str:
         """ ""Строковое представление категории."""
